@@ -83,6 +83,32 @@ RSpec.describe Merchant, type: :model do
     end
   end
 
+  xit 'can find top 5 merchants' do
+    #I really can't figure this out
+    m1 = double(Merchant)
+    m2 = double(Merchant)
+    m3 = double(Merchant)
+    m4 = double(Merchant)
+    m5 = double(Merchant)
+    m6 = double(Merchant)
+
+    allow(m1).to receive(:total_revenue).and_return(0)
+    allow(m2).to receive(:total_revenue).and_return(1)
+    allow(m3).to receive(:total_revenue).and_return(1900)
+    allow(m4).to receive(:total_revenue).and_return(1111)
+    allow(m5).to receive(:total_revenue).and_return(10)
+    allow(m6).to receive(:total_revenue).and_return(99999)
+
+    m1.total_revenue
+    m2.total_revenue
+    m3.total_revenue
+    m4.total_revenue
+    m5.total_revenue
+    m6.total_revenue
+
+    expect(Merchant.top_merchants).to eq([m6, m3, m4, m5, m2])
+  end
+
   describe '#not_shipped' do
     it 'shows items that havent been shipped' do
 

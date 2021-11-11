@@ -2,6 +2,14 @@
 
 <%= link_to "New Merchant", new_admin_merchant_path %>
 <br>
+<section id='top-5-merchants'>
+  <h3>Top Five Merchants:</h3>
+  <ol>
+    <% @merchants.top_merchants.each do |merchant| %>
+        <li> <%= link_to merchant.name, admin_merchant_path(merchant) %>- Total revenue: <%= merchant.total_revenue %></li>
+    <% end %>
+  </ol>
+</section>
 <br>
 <% @merchants.each do |merchant| %>
   <%= link_to "#{merchant.name}", "/admin/merchants/#{merchant.id}" %>

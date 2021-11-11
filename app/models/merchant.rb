@@ -17,6 +17,29 @@ class Merchant < ApplicationRecord
     temp
   end
 
+  def self.top_merchants
+    temp = joins(invoices: :transactions)
+          .where(transactions: {result: 0})
+          .group('merchants.id')
+          .select('merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS item_revenue')
+          .order(item_revenue: :desc)
+          .limit(5)
+    temp
+  end
+
+  def total_revenue
+     total_revenue_table = invoices.joins(:transactions)
+                                   .where(transactions: {result: :success})
+                                   .group('invoices.id')
+                                   .select('sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue')
+
+    if total_revenue_table.first != nil
+      total_revenue_table.first.total_revenue
+    else
+      0
+    end
+  end
+
   def not_shipped
     item_ids = invoice_items.where.not(status: "2")
                             .order(:created_at)
