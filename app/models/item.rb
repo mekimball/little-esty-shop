@@ -7,7 +7,7 @@ class Item < ApplicationRecord
   validates_presence_of :description
   validates_presence_of :unit_price
 
-  enum status: {enabled: 0, disabled: 1}
+  enum status: { enabled: 0, disabled: 1 }
 
   def self.enabled_items
     where(status: 0)
@@ -20,7 +20,7 @@ class Item < ApplicationRecord
   def amount(invoice_id)
     invoice_items.find_by(invoice_id: invoice_id, item_id: id).quantity
   end
-  
+
   def order_status(invoice_id)
     invoice_items.find_by(invoice_id: invoice_id, item_id: id).status
   end

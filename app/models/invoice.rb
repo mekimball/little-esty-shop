@@ -5,12 +5,12 @@ class Invoice < ApplicationRecord
   has_many :items, through: :invoice_items
   has_many :merchants, through: :items, source: :invoice_items
 
-  enum status: [:cancelled, :completed, 'in progress' ]
+  enum status: [:cancelled, :completed, 'in progress']
 
   validates_presence_of :customer_id
   validates_presence_of :status
 
   def total_revenue
-    invoice_items.sum("quantity * unit_price")
+    invoice_items.sum('quantity * unit_price')
   end
 end
