@@ -18,7 +18,7 @@ RSpec.describe 'admin invoices index' do
     end
 
     it 'links to the invoice show page' do
-      click_on "#{@invoice.id}"
+      click_on @invoice.id.to_s
 
       expect(page).to have_current_path(admin_invoice_path(@invoice))
     end

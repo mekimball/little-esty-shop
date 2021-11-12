@@ -6,16 +6,15 @@ class Merchant < ApplicationRecord
   has_many :transactions, through: :invoices
 
   validates_presence_of :name
-  enum status: {enabled: 0, disabled: 1}
+  enum status: { enabled: 0, disabled: 1 }
 
   def top_customers
-    temp = Transaction.joins(invoice: :customer)
-    .where("result =?", 0)
-    .where("status =?", 1)
-    .select("customers.*, count(transactions.id) as top_count")
-    .group("customers.id")
-    .order(top_count: :desc).limit(5)
-    temp
+    Transaction.joins(invoice: :customer)
+               .where('result =?', 0)
+               .where('status =?', 1)
+               .select('customers.*, count(transactions.id) as top_count')
+               .group('customers.id')
+               .order(top_count: :desc).limit(5)
   end
 
   def not_shipped
@@ -27,13 +26,13 @@ class Merchant < ApplicationRecord
 
   def top_five_items_by_revenue
     items.joins(invoices: :transactions)
-    .where('transactions.result = 0')
-    .select("items.*, sum(invoice_items.quantity * invoice_items.unit_price)as total_revenue")
-    .group(:id)
-    .order(total_revenue: :desc)
-    .limit(5)
+         .where('transactions.result = 0')
+         .select('items.*, sum(invoice_items.quantity * invoice_items.unit_price)as total_revenue')
+         .group(:id)
+         .order(total_revenue: :desc)
+         .limit(5)
   end
-  
+
   def self.enabled_merchants
     where(status: 0)
   end
