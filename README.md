@@ -15,9 +15,9 @@
 - Ruby 2.7.2
 
 - Rails 5.2.6
-- 
+
 #### Important Gems
-Testing: [rspec-rails](https://github.com/rspec/rspec-rails), [shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers), [simplecov](https://github.com/simplecov-ruby/simplecov), [webmock](https://github.com/bblimke/webmock), [vcr](https://github.com/vcr/vcr)
+Testing: [rspec-rails](https://github.com/rspec/rspec-rails), [shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers), [simplecov](https://github.com/simplecov-ruby/simplecov)
 
 ## Our Database Schema 
 ![Screen Shot 2021-11-02 at 8 30 16 PM](https://user-images.githubusercontent.com/79548116/141386692-590503c1-782d-4fb7-b791-600da6965a85.png)
