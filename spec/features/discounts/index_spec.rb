@@ -1,4 +1,6 @@
 require 'rails_helper'
+require 'faraday'
+require 'json'
 
 RSpec.describe 'Discount Index Page', type: :feature do
   describe 'Discount Index' do
@@ -122,6 +124,11 @@ RSpec.describe 'Discount Index Page', type: :feature do
         click_link "Discount Details"
         expect(current_path).to eq(merchant_bulk_discount_path(@merchant_1, @discount_1))
       end
+    end
+  
+    it 'has a link to create a new discount' do
+      click_link "New Discount"
+      expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant_1))
     end
   end
 end
