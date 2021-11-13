@@ -31,3 +31,5 @@
 /coverage.data
 /coverage/*
 coverage/index.html
+coverage/index.html
+spec/features/discounts/new_spec.rb
