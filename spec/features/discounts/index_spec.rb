@@ -107,9 +107,9 @@ RSpec.describe 'Discount Index Page', type: :feature do
       @discount_2 = @merchant_1.bulk_discounts.create!(discount: 0.25, number_of_items_necessary: 10)
       @discount_3 = @merchant_1.bulk_discounts.create!(discount: 0.15, number_of_items_necessary: 5)
       @discount_4 = @merchant_2.bulk_discounts.create!(discount: 0.07, number_of_items_necessary: 7)
-
+      
       visit merchant_bulk_discounts_path(@merchant_1)
-      end
+    end
     it 'shows all discounts' do
       
       expect(page).to have_content("Discount: #{@discount_1.discount * 100}%, Item Threshold: #{@discount_1.number_of_items_necessary}")
@@ -117,7 +117,7 @@ RSpec.describe 'Discount Index Page', type: :feature do
       expect(page).to have_content("Discount: #{@discount_3.discount * 100}%, Item Threshold: #{@discount_3.number_of_items_necessary}")
       expect(page).to_not have_content("Discount: #{@discount_4.discount * 100}%, Item Threshold: #{@discount_4.number_of_items_necessary}")
     end
-
+    
     it 'has links to each discount' do
       
       within "#id-#{@discount_1.id}" do
@@ -125,10 +125,31 @@ RSpec.describe 'Discount Index Page', type: :feature do
         expect(current_path).to eq(merchant_bulk_discount_path(@merchant_1, @discount_1))
       end
     end
-  
+    
     it 'has a link to create a new discount' do
       click_link "New Discount"
       expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant_1))
     end
+    
+    it 'can delete a discount' do
+      discount_4 = @merchant_1.bulk_discounts.create!(discount: 0.07, number_of_items_necessary: 7)
+      visit merchant_bulk_discounts_path(@merchant_1)
+      
+      expect(page).to have_content("Discount: #{(@discount_4.discount * 100).round(2)}%, Item Threshold: #{@discount_4.number_of_items_necessary}")
+      
+      within "#id-#{discount_4.id}" do
+        click_link "Delete Discount"
+      end
+      
+      expect(current_path).to eq(merchant_bulk_discounts_path(@merchant_1))
+      expect(page).to_not have_content("Discount: #{(@discount_4.discount * 100).round(2)}%, Item Threshold: #{@discount_4.number_of_items_necessary}")
+      
+    end
   end
 end
+# As a merchant
+# When I visit my bulk discounts index
+# Then next to each bulk discount I see a link to delete it
+# When I click this link
+# Then I am redirected back to the bulk discounts index page
+# And I no longer see the discount listed
