@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe 'Dashboard', type: :feature do
-  describe 'Merchant Dashboard' do
-    before(:each) do
+RSpec.describe 'Discount Index Page', type: :feature do
+  describe 'Discount Index' do
+        before(:each) do
       @merchant_1 = Merchant.create!(name: 'Hair Care')
       @merchant_2 = Merchant.create!(name: 'Jewelry')
       @merchant_3 = Merchant.create!(name: 'Office Space')
@@ -101,81 +101,35 @@ RSpec.describe 'Dashboard', type: :feature do
                                            result: 0, invoice_id: @invoice_8.id)
       @transaction_8 = Transaction.create!(credit_card_number: 203_942,
                                            result: 1, invoice_id: @invoice_9.id)
-      visit "/merchants/#{@merchant_1.id}/dashboard"
-    end
+      @discount_1 = @merchant_1.bulk_discounts.create!(discount: 0.5, number_of_items_necessary: 15)
+      @discount_2 = @merchant_1.bulk_discounts.create!(discount: 0.25, number_of_items_necessary: 10)
+      @discount_3 = @merchant_1.bulk_discounts.create!(discount: 0.15, number_of_items_necessary: 5)
+      @discount_4 = @merchant_2.bulk_discounts.create!(discount: 0.07, number_of_items_necessary: 7)
 
-    it 'shows merchant name' do
-      expect(page).to have_content(@merchant_1.name)
-    end
-
-    it 'links to merchant items index' do
-      click_on 'Items Index'
-
-      expect(current_path).to eq(merchant_items_path(@merchant_1))
-    end
-
-    it 'links to merchant invoices index' do
-
-      click_on 'Invoices Index'
+      visit merchant_bulk_discounts_path(@merchant_1)
+      end
+    it 'shows all discounts' do
       
-      expect(current_path).to eq(merchant_invoices_path(@merchant_1))
+      expect(page).to have_content("Discount: #{@discount_1.discount * 100}%, Item Threshold: #{@discount_1.number_of_items_necessary}")
+      expect(page).to have_content("Discount: #{@discount_2.discount * 100}%, Item Threshold: #{@discount_2.number_of_items_necessary}")
+      expect(page).to have_content("Discount: #{@discount_3.discount * 100}%, Item Threshold: #{@discount_3.number_of_items_necessary}")
+      expect(page).to_not have_content("Discount: #{@discount_4.discount * 100}%, Item Threshold: #{@discount_4.number_of_items_necessary}")
     end
 
-    describe 'favorite customers' do
-      it 'names  top 5 customers' do
-        expect(page).to have_content('Top 5 Customers:')
-        expect(page).to have_content(@customer_1.first_name)
-        expect(@customer_1.first_name).to appear_before(@customer_6.first_name)
-        expect(@customer_6.first_name).to appear_before(@customer_2.first_name)
-        expect(@customer_2.first_name).to appear_before(@customer_3.first_name)
-        expect(@customer_3.first_name).to appear_before(@customer_4.first_name)
-        expect(page).to_not have_content(@customer_5.first_name)
-      end
-    end
-
-    describe 'items ready to be shipped' do
-      it 'has ready to be shipped section' do
-        expect(page).to have_content('Items Ready to Ship')
-      end
-
-      it 'shows items that are ready to be shippped' do
-        expect(page).to have_content(@item_1.name)
-        expect(page).to have_content(@item_3.name)
-        expect(page).to have_content(@item_4.name)
-        expect(page).to have_content(@item_7.name)
-        expect(page).to have_content(@item_8.name)
-        expect(page).to_not have_content(@item_2.name)
-      end
-
-      it 'shows the items invoice number' do
-        expect(page).to have_content(@item_1.invoices.first.id)
-        expect(page).to have_content(@item_3.invoices.first.id)
-        expect(page).to have_content(@item_4.invoices.first.id)
-        expect(page).to have_content(@item_7.invoices.first.id)
-        expect(page).to have_content(@item_8.invoices.first.id)
-        expect(page).to_not have_content(@item_2.invoices.first.id)
-      end
-
-      it 'has a link to each invoice' do
-        click_link @item_1.invoices.first.id.to_s
-
-        expect(page).to have_content(@item_1.invoices.first.id)
-      end
-
-      it 'shows invoice created by date' do
-        expect(page).to have_content(@invoice_1.created_at.strftime('%A, %B %e, %Y').to_s)
-      end
-
-      it 'shows items in reverse order' do
-        expect(@invoice_2.id.to_s).to appear_before(@invoice_1.id.to_s,
-                                                    only_text: true)
-      end
-    end
-    describe 'bulk discounts' do
-      it 'has a link to the discount index' do
-
-        expect(page).to have_link('Bulk Discounts')
+    it 'has links to each discount' do
+      
+      within "#id-#{@discount_1.id}" do
+        click_link "Discount Details"
+        expect(current_path).to eq(merchant_bulk_discount_path(@merchant_1, @discount_1))
       end
     end
   end
 end
+# As a merchant
+# When I visit my merchant dashboard
+# Then I see a link to view all my discounts
+# When I click this link
+# Then I am taken to my bulk discounts index page
+# Where I see all of my bulk discounts including their
+# percentage discount and quantity thresholds
+# And each bulk discount listed includes a link to its show page
