@@ -144,11 +144,19 @@ RSpec.describe 'Discount Index Page', type: :feature do
       expect(current_path).to eq(merchant_bulk_discounts_path(@merchant_1))
       expect(page).to_not have_content("Discount: #{(@discount_4.discount * 100).round(2)}%, Item Threshold: #{@discount_4.threshold}")
     end
-    it 'shows a discounts threshold and percentage' do
 
+    it 'shows upcoming holidays' do
+      within "#holidays" do
+        save_and_open_page
+        
+        expect(page).to have_content("Thanksgiving Day: 2021-11-25")
+        expect(page).to have_content("Christmas Day: 2021-12-24")
+        expect(page).to have_content("New Year's Day: 2021-12-31")
+      end
     end
   end
 end
 # As a merchant
-# When I visit my bulk discount show page
-# Then I see the bulk discount's quantity threshold and percentage discount
+# When I visit the discounts index page
+# I see a section with a header of "Upcoming Holidays"
+# In this section the name and date of the next 3 upcoming US holidays are listed.
