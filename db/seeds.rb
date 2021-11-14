@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-      BulkDiscount.create!(discount: 0.5, number_of_items_necessary: 25, merchant_id: 1)
-      BulkDiscount.create!(discount: 0.25, number_of_items_necessary: 20, merchant_id: 1)
-      BulkDiscount.create!(discount: 0.15, number_of_items_necessary: 10, merchant_id: 1)
-      BulkDiscount.create!(discount: 0.5, number_of_items_necessary: 15, merchant_id: 2)
+      BulkDiscount.create!(discount: 0.5, threshold: 25, merchant_id: 1)
+      BulkDiscount.create!(discount: 0.25, threshold: 20, merchant_id: 1)
+      BulkDiscount.create!(discount: 0.15, threshold: 10, merchant_id: 1)
+      BulkDiscount.create!(discount: 0.5, threshold: 15, merchant_id: 2)

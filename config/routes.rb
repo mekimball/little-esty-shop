@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :dashboard, only: [:index]
-    resources :merchants, except: :delete
+    resources :merchants, except: [:delete]
     resources :invoices, except: [:delete]
   end
 
@@ -13,7 +13,5 @@ Rails.application.routes.draw do
     resources :bulk_discounts, except: %i[update]
     resources :items, except: :delete
     resources :invoices, only: %i[index show update]
-
-    # get "/dashboard", controller: :merchants, action: :show, as: "dashboard"
   end
 end
