@@ -1,0 +1,11 @@
+<h1>Discount: <%= (@discount.discount * 100).round(2) %>%, Item Threshold: <%= @discount.threshold %></h1>
+
+<%= form_with url: merchant_bulk_discount_path(@discount.merchant, @discount), method: :patch, local: true do |f| %>
+  <p><%= f.label :discount, 'Discount:' %>
+  <%= f.text_field :discount %></p>
+
+  <p><%= f.label :item_threshold, 'Item Threshold:' %>
+  <%= f.text_field :item_threshold %></p>
+
+  <%= f.submit 'Update' %>
+<% end %>

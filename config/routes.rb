@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   resources :merchants, only: [:show] do
     resources :dashboard, only: [:index]
-    resources :bulk_discounts, except: %i[update]
+    resources :bulk_discounts
     resources :items, except: :delete
     resources :invoices, only: %i[index show update]
   end

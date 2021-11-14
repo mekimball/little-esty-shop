@@ -11,5 +11,11 @@ RSpec.describe 'Discount Show Page', type: :feature do
     it ' shows the discounts percentage and threshold' do
       expect(page).to have_content("Discount: #{@discount_1.discount * 100}%, Item Threshold: #{@discount_1.threshold}")
     end
+
+    it 'has a link to edit a discount' do
+      click_link 'Edit'
+
+      expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant_1, @discount_1))
+    end
   end
 end
