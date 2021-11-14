@@ -103,19 +103,19 @@ RSpec.describe 'Discount Index Page', type: :feature do
                                            result: 0, invoice_id: @invoice_8.id)
       @transaction_8 = Transaction.create!(credit_card_number: 203_942,
                                            result: 1, invoice_id: @invoice_9.id)
-      @discount_1 = @merchant_1.bulk_discounts.create!(discount: 0.5, number_of_items_necessary: 15)
-      @discount_2 = @merchant_1.bulk_discounts.create!(discount: 0.25, number_of_items_necessary: 10)
-      @discount_3 = @merchant_1.bulk_discounts.create!(discount: 0.15, number_of_items_necessary: 5)
-      @discount_4 = @merchant_2.bulk_discounts.create!(discount: 0.07, number_of_items_necessary: 7)
+      @discount_1 = @merchant_1.bulk_discounts.create!(discount: 0.5, threshold: 15)
+      @discount_2 = @merchant_1.bulk_discounts.create!(discount: 0.25, threshold: 10)
+      @discount_3 = @merchant_1.bulk_discounts.create!(discount: 0.15, threshold: 5)
+      @discount_4 = @merchant_2.bulk_discounts.create!(discount: 0.07, threshold: 7)
       
       visit merchant_bulk_discounts_path(@merchant_1)
     end
     it 'shows all discounts' do
       
-      expect(page).to have_content("Discount: #{@discount_1.discount * 100}%, Item Threshold: #{@discount_1.number_of_items_necessary}")
-      expect(page).to have_content("Discount: #{@discount_2.discount * 100}%, Item Threshold: #{@discount_2.number_of_items_necessary}")
-      expect(page).to have_content("Discount: #{@discount_3.discount * 100}%, Item Threshold: #{@discount_3.number_of_items_necessary}")
-      expect(page).to_not have_content("Discount: #{@discount_4.discount * 100}%, Item Threshold: #{@discount_4.number_of_items_necessary}")
+      expect(page).to have_content("Discount: #{@discount_1.discount * 100}%, Item Threshold: #{@discount_1.threshold}")
+      expect(page).to have_content("Discount: #{@discount_2.discount * 100}%, Item Threshold: #{@discount_2.threshold}")
+      expect(page).to have_content("Discount: #{@discount_3.discount * 100}%, Item Threshold: #{@discount_3.threshold}")
+      expect(page).to_not have_content("Discount: #{@discount_4.discount * 100}%, Item Threshold: #{@discount_4.threshold}")
     end
     
     it 'has links to each discount' do
@@ -132,24 +132,23 @@ RSpec.describe 'Discount Index Page', type: :feature do
     end
     
     it 'can delete a discount' do
-      discount_4 = @merchant_1.bulk_discounts.create!(discount: 0.07, number_of_items_necessary: 7)
+      discount_4 = @merchant_1.bulk_discounts.create!(discount: 0.07, threshold: 7)
       visit merchant_bulk_discounts_path(@merchant_1)
       
-      expect(page).to have_content("Discount: #{(@discount_4.discount * 100).round(2)}%, Item Threshold: #{@discount_4.number_of_items_necessary}")
+      expect(page).to have_content("Discount: #{(@discount_4.discount * 100).round(2)}%, Item Threshold: #{@discount_4.threshold}")
       
       within "#id-#{discount_4.id}" do
         click_link "Delete Discount"
       end
       
       expect(current_path).to eq(merchant_bulk_discounts_path(@merchant_1))
-      expect(page).to_not have_content("Discount: #{(@discount_4.discount * 100).round(2)}%, Item Threshold: #{@discount_4.number_of_items_necessary}")
-      
+      expect(page).to_not have_content("Discount: #{(@discount_4.discount * 100).round(2)}%, Item Threshold: #{@discount_4.threshold}")
+    end
+    it 'shows a discounts threshold and percentage' do
+
     end
   end
 end
 # As a merchant
-# When I visit my bulk discounts index
-# Then next to each bulk discount I see a link to delete it
-# When I click this link
-# Then I am redirected back to the bulk discounts index page
-# And I no longer see the discount listed
+# When I visit my bulk discount show page
+# Then I see the bulk discount's quantity threshold and percentage discount

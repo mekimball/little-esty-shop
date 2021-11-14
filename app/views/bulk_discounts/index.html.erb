@@ -2,7 +2,7 @@
 
 <% @discounts.each do |discount| %>
 <div id="id-<%= discount.id %>">
-  <p>Discount: <%= (discount.discount * 100).round(2) %>%, Item Threshold: <%= discount.number_of_items_necessary %> <%= link_to 'Discount Details', merchant_bulk_discount_path(@merchant, discount) %>
+  <p>Discount: <%= (discount.discount * 100).round(2) %>%, Item Threshold: <%= discount.threshold %> <%= link_to 'Discount Details', merchant_bulk_discount_path(@merchant, discount) %>
   <%= link_to 'Delete Discount', merchant_bulk_discount_path(@merchant, discount), method: :delete %></p>
   </div>
 <% end %>

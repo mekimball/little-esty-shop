@@ -3,7 +3,7 @@ class CreateBulkDiscounts < ActiveRecord::Migration[5.2]
     create_table :bulk_discounts do |t|
       t.references :merchant, foreign_key: true
       t.float :discount
-      t.integer :number_of_items_necessary
+      t.integer :threshold
 
       t.timestamps
     end
