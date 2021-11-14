@@ -147,7 +147,7 @@ RSpec.describe 'Discount Index Page', type: :feature do
 
     it 'shows upcoming holidays' do
       within "#holidays" do
-        save_and_open_page
+
         
         expect(page).to have_content("Thanksgiving Day: 2021-11-25")
         expect(page).to have_content("Christmas Day: 2021-12-24")
@@ -156,7 +156,3 @@ RSpec.describe 'Discount Index Page', type: :feature do
     end
   end
 end
-# As a merchant
-# When I visit the discounts index page
-# I see a section with a header of "Upcoming Holidays"
-# In this section the name and date of the next 3 upcoming US holidays are listed.
