@@ -24,6 +24,11 @@ RSpec.describe 'Show page', type: :feature do
                                 quantity: 1, unit_price: 10, status: 1)
     @ii_3 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_3.id,
                                 quantity: 2, unit_price: 8, status: 2)
+
+    @discount_1 = @merchant_1.bulk_discounts.create!(discount: 0.5, threshold: 15)
+    @discount_2 = @merchant_1.bulk_discounts.create!(discount: 0.25, threshold: 10)
+    @discount_3 = @merchant_1.bulk_discounts.create!(discount: 0.10, threshold: 5)
+
     visit merchant_invoice_path(@merchant_1, @invoice_1)
   end
 
@@ -66,4 +71,15 @@ RSpec.describe 'Show page', type: :feature do
       expect(@ii_1.status).to eq('pending')
     end
   end
+
+  # describe 'invoice discounts' do
+  #   it 'can show discounted revenue' do
+  #     save_and_open_page
+  #     expect(page).to have_content("Discounted Revenue: 91")
+  #   end
+  # end
 end
+# As a merchant
+# When I visit my merchant invoice show page
+# Then I see the total revenue for my merchant from this invoice (not including discounts)
+# And I see the total discounted revenue for my merchant from this invoice which includes bulk discounts in the calculation
