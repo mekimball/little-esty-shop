@@ -8,7 +8,7 @@ RSpec.describe 'Discount Edit Page', type: :feature do
 
       visit edit_merchant_bulk_discount_path(@merchant_1, @discount_1)
     end
-    it 'can edit a discount' do
+    it 'can edit a discount' do      
       
       fill_in 'discount', with: 0.20
       fill_in 'item_threshold', with: 12
