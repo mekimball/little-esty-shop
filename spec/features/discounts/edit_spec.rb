@@ -17,8 +17,6 @@ RSpec.describe 'Discount Edit Page', type: :feature do
       expect(current_path).to eq(merchant_bulk_discount_path(@merchant_1, @discount_1))
       
       expect(page).to have_content("Discount: 20.0%, Item Threshold: 12")
-
-      save_and_open_page
     end
   end
 end
