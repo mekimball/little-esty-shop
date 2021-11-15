@@ -72,12 +72,12 @@ RSpec.describe 'Show page', type: :feature do
     end
   end
 
-  # describe 'invoice discounts' do
-  #   it 'can show discounted revenue' do
-  #     save_and_open_page
-  #     expect(page).to have_content("Discounted Revenue: 91")
-  #   end
-  # end
+  describe 'invoice discounts' do
+    it 'can show discounted revenue' do
+
+      expect(page).to have_content("Discounted Revenue: 91")
+    end
+  end
 end
 # As a merchant
 # When I visit my merchant invoice show page

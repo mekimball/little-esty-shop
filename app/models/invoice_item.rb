@@ -9,4 +9,12 @@ class InvoiceItem < ApplicationRecord
                                      .pluck(:invoice_id)
     Invoice.order(:created_at).find(incomplete_invoices)
   end
+
+  def best_discount
+    discounts = item.merchant.bulk_discounts
+    all_discounts = discounts.where("bulk_discounts.threshold <= #{self.quantity}")
+    all_discounts.max_by do |discount|
+      discount.discount
+    end
+  end
 end

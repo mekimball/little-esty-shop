@@ -59,7 +59,7 @@ RSpec.describe InvoiceItem, type: :model do
       @ii_1 = InvoiceItem.create!(invoice_id: @invoice_1.id,
                                   item_id: @item_1.id, quantity: 9, unit_price: 10, status: 1)
       @ii_2 = InvoiceItem.create!(invoice_id: @invoice_1.id,
-                                  item_id: @item_3.id, quantity: 1, unit_price: 10, status: 1)
+                                  item_id: @item_2.id, quantity: 100, unit_price: 10, status: 1)
       @ii_3 = InvoiceItem.create!(invoice_id: @invoice_2.id,
                                   item_id: @item_2.id, quantity: 2, unit_price: 8, status: 2)
       @ii_4 = InvoiceItem.create!(invoice_id: @invoice_3.id,
@@ -71,11 +71,22 @@ RSpec.describe InvoiceItem, type: :model do
                                            result: 0, invoice_id: @invoice_2.id)
       @transaction_3 = Transaction.create!(credit_card_number: 234_092,
                                            result: 0, invoice_id: @invoice_3.id)
+
+      @discount_1 = @merchant_1.bulk_discounts.create!(discount: 0.85, threshold: 15)
+      @discount_2 = @merchant_1.bulk_discounts.create!(discount: 0.25, threshold: 10)
+      @discount_3 = @merchant_1.bulk_discounts.create!(discount: 0.15, threshold: 9)
+      @discount_4 = @merchant_1.bulk_discounts.create!(discount: 0.75, threshold: 5)
     end
 
     it 'returns incomplete invoices' do
       expect(InvoiceItem.incomplete_invoices).to include(@invoice_3, @invoice_1)
       expect(InvoiceItem.incomplete_invoices).to_not include(@invoice_2)
+    end
+
+    it 'can return best discount' do
+
+      expect(@ii_1.best_discount).to eq(@discount_4)
+      expect(@ii_2.best_discount).to eq(@discount_1)
     end
   end
 end

@@ -145,14 +145,14 @@ RSpec.describe 'Discount Index Page', type: :feature do
       expect(page).to_not have_content("Discount: #{(@discount_4.discount * 100).round(2)}%, Item Threshold: #{@discount_4.threshold}")
     end
 
-    it 'shows upcoming holidays' do
-      within "#holidays" do
+    # it 'shows upcoming holidays' do
+    #   within "#holidays" do
 
         
-        expect(page).to have_content("Thanksgiving Day: 2021-11-25")
-        expect(page).to have_content("Christmas Day: 2021-12-24")
-        expect(page).to have_content("New Year's Day: 2021-12-31")
-      end
-    end
+    #     expect(page).to have_content("Thanksgiving Day: 2021-11-25")
+    #     expect(page).to have_content("Christmas Day: 2021-12-24")
+    #     expect(page).to have_content("New Year's Day: 2021-12-31")
+    #   end
+    # end
   end
 end

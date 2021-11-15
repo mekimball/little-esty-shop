@@ -20,6 +20,10 @@ RSpec.describe Invoice, type: :model do
                                 quantity: 9, unit_price: 10, status: 0)
     @ii_2 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_2.id,
                                 quantity: 1, unit_price: 10, status: 0)
+
+      @discount_1 = @merchant_1.bulk_discounts.create!(discount: 0.5, threshold: 15)
+      @discount_2 = @merchant_1.bulk_discounts.create!(discount: 0.25, threshold: 10)
+      @discount_3 = @merchant_1.bulk_discounts.create!(discount: 0.15, threshold: 5)
   end
 
   describe 'relationships' do
@@ -38,6 +42,10 @@ RSpec.describe Invoice, type: :model do
   describe 'methods' do
     it 'can return total invoice revenue' do
       expect(@invoice_1.total_revenue).to eq(100)
+    end
+
+    it 'can return discounted revenue' do
+      expect(@invoice_1.discounted_revenue).to eq(90)
     end
   end
 end

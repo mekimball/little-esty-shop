@@ -22,7 +22,6 @@ class ItemsController < ApplicationController
     if @item.update(item_params)
       flash[:success] = 'Successfully Updated'
       redirection 
-      # redirect_to merchant_item_path(@merchant)
     else
       flash[:alert] = 'Try Again'
       redirect_to edit_merchant_item_path(@merchant, @item) #need this
