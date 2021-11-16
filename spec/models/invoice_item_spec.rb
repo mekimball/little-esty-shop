@@ -88,5 +88,10 @@ RSpec.describe InvoiceItem, type: :model do
       expect(@ii_1.best_discount).to eq(@discount_4)
       expect(@ii_2.best_discount).to eq(@discount_1)
     end
+
+    it 'can return discoutned revenue' do
+      expect(@ii_1.discounted_revenue).to eq(22.5) 
+      expect(@ii_3.discounted_revenue).to eq(16) 
+    end
   end
 end

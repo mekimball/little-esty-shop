@@ -17,4 +17,12 @@ class InvoiceItem < ApplicationRecord
       discount.discount
     end
   end
+
+  def discounted_revenue
+    if best_discount.nil?
+      unit_price * quantity
+    else
+      (unit_price * quantity) - (unit_price * quantity * best_discount.discount)
+    end
+  end
 end

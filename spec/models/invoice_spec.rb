@@ -45,7 +45,7 @@ RSpec.describe Invoice, type: :model do
     end
 
     it 'can return discounted revenue' do
-      expect(@invoice_1.discounted_revenue).to eq(90)
+      expect(@invoice_1.discounted_revenue).to eq(86.5)
     end
   end
 end

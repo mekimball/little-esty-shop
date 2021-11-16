@@ -15,10 +15,8 @@ class Invoice < ApplicationRecord
   end
 
   def discounted_revenue
-    invoice.invoice_items.map do |ii|
-      ii.best_discount
-    require 'pry'; binding.pry
-    end
-
+    self.invoice_items.map do |ii|
+      ii.discounted_revenue
+    end.sum
   end
 end
