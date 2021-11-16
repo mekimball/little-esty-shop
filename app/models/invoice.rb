@@ -15,8 +15,8 @@ class Invoice < ApplicationRecord
   end
 
   def discounted_revenue
-    self.invoice_items.map do |ii|
+    self.invoice_items.sum do |ii|
       ii.discounted_revenue
-    end.sum
+    end
   end
 end

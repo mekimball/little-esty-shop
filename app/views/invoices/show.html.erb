@@ -8,7 +8,14 @@
   <p>Item Name: <%= item.name %></p>
   <p>Item Quantity: <%= item.invoice_items.first.quantity %></p>
   <p>Item Price: <%= item.invoice_items.first.unit_price %></p>
-  <p>invoice item id:<%= item.invoice_items.first.id %></p>
+
+  <p>invoice item id: <%= item.invoice_items.first.id %> <% if item.invoice_items.first.best_discount.nil? %>
+    <p>No Discount Applied</p>
+    <% else %>
+    <p><%= link_to "Discount #{item.invoice_items.first.best_discount.id}", merchant_bulk_discount_path(@merchant, item.invoice_items.first.best_discount) %></p>
+    <% end %>
+  
+  
   <div id="id-<%= item.invoice_items.first.id %>">
   <%= form_with url: merchant_invoice_path(@merchant, @invoice), method: :patch, local: true do |f| %>
   <%= f.label :status, "Invoice Status" %>
