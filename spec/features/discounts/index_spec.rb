@@ -4,7 +4,21 @@ require 'json'
 
 RSpec.describe 'Discount Index Page', type: :feature do
   describe 'Discount Index' do
-        before(:each) do
+    before(:each) do
+      @mock_response = [
+        {
+          "date": '2021-11-25',
+          "name": 'Thanksgiving Day'
+        },
+        {
+          "date": '2021-12-24',
+          "name": 'Christmas Day'
+        },
+        {
+          "date": '2021-12-31',
+          "name": "New Year's Day"
+        }
+      ]
       @merchant_1 = Merchant.create!(name: 'Hair Care')
       @merchant_2 = Merchant.create!(name: 'Jewelry')
       @merchant_3 = Merchant.create!(name: 'Office Space')
@@ -103,56 +117,61 @@ RSpec.describe 'Discount Index Page', type: :feature do
                                            result: 0, invoice_id: @invoice_8.id)
       @transaction_8 = Transaction.create!(credit_card_number: 203_942,
                                            result: 1, invoice_id: @invoice_9.id)
-      @discount_1 = @merchant_1.bulk_discounts.create!(discount: 0.5, threshold: 15)
-      @discount_2 = @merchant_1.bulk_discounts.create!(discount: 0.25, threshold: 10)
-      @discount_3 = @merchant_1.bulk_discounts.create!(discount: 0.15, threshold: 5)
-      @discount_4 = @merchant_2.bulk_discounts.create!(discount: 0.07, threshold: 7)
-      
+      @discount_1 = @merchant_1.bulk_discounts.create!(discount: 0.5,
+                                                       threshold: 15)
+      @discount_2 = @merchant_1.bulk_discounts.create!(discount: 0.25,
+                                                       threshold: 10)
+      @discount_3 = @merchant_1.bulk_discounts.create!(discount: 0.15,
+                                                       threshold: 5)
+      @discount_4 = @merchant_2.bulk_discounts.create!(discount: 0.07,
+                                                       threshold: 7)
+
       visit merchant_bulk_discounts_path(@merchant_1)
     end
     it 'shows all discounts' do
-      
       expect(page).to have_content("Discount: #{@discount_1.discount * 100}%, Item Threshold: #{@discount_1.threshold}")
       expect(page).to have_content("Discount: #{@discount_2.discount * 100}%, Item Threshold: #{@discount_2.threshold}")
       expect(page).to have_content("Discount: #{@discount_3.discount * 100}%, Item Threshold: #{@discount_3.threshold}")
       expect(page).to_not have_content("Discount: #{@discount_4.discount * 100}%, Item Threshold: #{@discount_4.threshold}")
     end
-    
+
     it 'has links to each discount' do
-      
       within "#id-#{@discount_1.id}" do
-        click_link "Discount Details"
-        expect(current_path).to eq(merchant_bulk_discount_path(@merchant_1, @discount_1))
+        click_link 'Discount Details'
+        expect(current_path).to eq(merchant_bulk_discount_path(@merchant_1,
+                                                               @discount_1))
       end
     end
-    
+
     it 'has a link to create a new discount' do
-      click_link "New Discount"
+      click_link 'New Discount'
       expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant_1))
     end
-    
+
     it 'can delete a discount' do
-      discount_4 = @merchant_1.bulk_discounts.create!(discount: 0.07, threshold: 7)
+      discount_4 = @merchant_1.bulk_discounts.create!(discount: 0.07,
+                                                      threshold: 7)
       visit merchant_bulk_discounts_path(@merchant_1)
-      
+
       expect(page).to have_content("Discount: #{(@discount_4.discount * 100).round(2)}%, Item Threshold: #{@discount_4.threshold}")
-      
+
       within "#id-#{discount_4.id}" do
-        click_link "Delete Discount"
+        click_link 'Delete Discount'
       end
-      
+
       expect(current_path).to eq(merchant_bulk_discounts_path(@merchant_1))
       expect(page).to_not have_content("Discount: #{(@discount_4.discount * 100).round(2)}%, Item Threshold: #{@discount_4.threshold}")
     end
 
-    # it 'shows upcoming holidays' do
-    #   within "#holidays" do
+    it 'shows upcoming holidays' do
+      within '#holidays' do
+        allow_any_instance_of(Faraday::Connection).to receive(:get).and_return(Faraday::Response.new)
+        allow_any_instance_of(Faraday::Response).to receive(:body).and_return(@mock_response)
 
-        
-    #     expect(page).to have_content("Thanksgiving Day: 2021-11-25")
-    #     expect(page).to have_content("Christmas Day: 2021-12-24")
-    #     expect(page).to have_content("New Year's Day: 2021-12-31")
-    #   end
-    # end
+        expect(page).to have_content('Thanksgiving Day: 2021-11-25')
+        expect(page).to have_content('Christmas Day: 2021-12-24')
+        expect(page).to have_content("New Year's Day: 2021-12-31")
+      end
+    end
   end
 end

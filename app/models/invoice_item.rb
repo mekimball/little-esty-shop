@@ -11,14 +11,13 @@ class InvoiceItem < ApplicationRecord
   end
 
   def best_discount
-    discounts = item.merchant.bulk_discounts
-    all_discounts = discounts.where("bulk_discounts.threshold <= #{self.quantity}")
-    all_discounts.max_by do |discount|
-      discount.discount
-    end
+    BulkDiscount
+      .where('bulk_discounts.threshold <= ? AND bulk_discounts.merchant_id = ?', quantity, item.merchant.id)
+      .order(:discount)
+      .last
   end
 
-  def discounted_revenue
+  def ii_discounted_revenue
     if best_discount.nil?
       unit_price * quantity
     else

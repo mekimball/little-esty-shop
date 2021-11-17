@@ -8,19 +8,24 @@ RSpec.describe 'Admin invoice show page' do
       @merchant_2 = Merchant.create(name: 'Rob')
       @invoice_1 = Invoice.create!(customer_id: @customer_1.id, status: 0)
       @item_1 = Item.create!(name: 'Test Item', description: 'Just a thing',
-                           unit_price: 1300, merchant_id: @merchant_1.id)
+                             unit_price: 1300, merchant_id: @merchant_1.id)
       @item_2 = Item.create!(name: 'Test Item', description: 'Just a thing',
-                           unit_price: 1300, merchant_id: @merchant_2.id)
+                             unit_price: 1300, merchant_id: @merchant_2.id)
       @ii_1 = InvoiceItem.create!(item_id: @item_1.id,
-                                          invoice_id: @invoice_1.id, quantity: 50, unit_price: 2)
+                                  invoice_id: @invoice_1.id, quantity: 50, unit_price: 2)
       @ii_2 = InvoiceItem.create!(item_id: @item_2.id,
-                                          invoice_id: @invoice_1.id, quantity: 55, unit_price: 2)
+                                  invoice_id: @invoice_1.id, quantity: 55, unit_price: 2)
 
-      @discount_1 = @merchant_1.bulk_discounts.create!(discount: 0.5, threshold: 15)
-      @discount_2 = @merchant_1.bulk_discounts.create!(discount: 0.6, threshold: 10)
-      @discount_3 = @merchant_1.bulk_discounts.create!(discount: 0.15, threshold: 5)
-      @discount_4 = @merchant_2.bulk_discounts.create!(discount: 0.2, threshold: 55)
-      @discount_4 = @merchant_2.bulk_discounts.create!(discount: 0.3, threshold: 50)
+      @discount_1 = @merchant_1.bulk_discounts.create!(discount: 0.5,
+                                                       threshold: 15)
+      @discount_2 = @merchant_1.bulk_discounts.create!(discount: 0.6,
+                                                       threshold: 10)
+      @discount_3 = @merchant_1.bulk_discounts.create!(discount: 0.15,
+                                                       threshold: 5)
+      @discount_4 = @merchant_2.bulk_discounts.create!(discount: 0.2,
+                                                       threshold: 55)
+      @discount_4 = @merchant_2.bulk_discounts.create!(discount: 0.3,
+                                                       threshold: 50)
 
       visit admin_invoice_path(@invoice_1)
     end
@@ -70,9 +75,7 @@ RSpec.describe 'Admin invoice show page' do
     end
 
     it 'returns discounted revenue' do
-      save_and_open_page
-      
-      expect(page).to have_content("Discounted Revenue: 117.0")
+      expect(page).to have_content('Discounted Revenue: 117.0')
     end
   end
 end

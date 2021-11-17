@@ -72,10 +72,14 @@ RSpec.describe InvoiceItem, type: :model do
       @transaction_3 = Transaction.create!(credit_card_number: 234_092,
                                            result: 0, invoice_id: @invoice_3.id)
 
-      @discount_1 = @merchant_1.bulk_discounts.create!(discount: 0.85, threshold: 15)
-      @discount_2 = @merchant_1.bulk_discounts.create!(discount: 0.25, threshold: 10)
-      @discount_3 = @merchant_1.bulk_discounts.create!(discount: 0.15, threshold: 9)
-      @discount_4 = @merchant_1.bulk_discounts.create!(discount: 0.75, threshold: 5)
+      @discount_1 = @merchant_1.bulk_discounts.create!(discount: 0.85,
+                                                       threshold: 15)
+      @discount_2 = @merchant_1.bulk_discounts.create!(discount: 0.25,
+                                                       threshold: 10)
+      @discount_3 = @merchant_1.bulk_discounts.create!(discount: 0.15,
+                                                       threshold: 9)
+      @discount_4 = @merchant_1.bulk_discounts.create!(discount: 0.75,
+                                                       threshold: 5)
     end
 
     it 'returns incomplete invoices' do
@@ -84,14 +88,13 @@ RSpec.describe InvoiceItem, type: :model do
     end
 
     it 'can return best discount' do
-
       expect(@ii_1.best_discount).to eq(@discount_4)
       expect(@ii_2.best_discount).to eq(@discount_1)
     end
 
     it 'can return discoutned revenue' do
-      expect(@ii_1.discounted_revenue).to eq(22.5) 
-      expect(@ii_3.discounted_revenue).to eq(16) 
+      expect(@ii_1.ii_discounted_revenue).to eq(22.5)
+      expect(@ii_3.ii_discounted_revenue).to eq(16)
     end
   end
 end
