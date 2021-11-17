@@ -15,7 +15,7 @@
     <p><%= link_to "Discount #{item.invoice_items.first.best_discount.id}", merchant_bulk_discount_path(@merchant, item.invoice_items.first.best_discount) %></p>
     <% end %>
   
-  
+
   <div id="id-<%= item.invoice_items.first.id %>">
   <%= form_with url: merchant_invoice_path(@merchant, @invoice), method: :patch, local: true do |f| %>
   <%= f.label :status, "Invoice Status" %>
@@ -25,7 +25,7 @@
   <% end %>
   
   <% end %>
-  
+
   <p>Total Revenue: <%= @invoice.total_revenue %>
   <p>Discounted Revenue: <%= @invoice.discounted_revenue %>
 

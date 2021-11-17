@@ -115,9 +115,8 @@ RSpec.describe 'Dashboard', type: :feature do
     end
 
     it 'links to merchant invoices index' do
-
       click_on 'Invoices Index'
-      
+
       expect(current_path).to eq(merchant_invoices_path(@merchant_1))
     end
 
@@ -173,7 +172,6 @@ RSpec.describe 'Dashboard', type: :feature do
     end
     describe 'bulk discounts' do
       it 'has a link to the discount index' do
-
         expect(page).to have_link('Bulk Discounts')
       end
     end

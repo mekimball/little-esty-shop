@@ -25,9 +25,12 @@ RSpec.describe 'Show page', type: :feature do
     @ii_3 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_3.id,
                                 quantity: 2, unit_price: 8, status: 2)
 
-    @discount_1 = @merchant_1.bulk_discounts.create!(discount: 0.5, threshold: 15)
-    @discount_2 = @merchant_1.bulk_discounts.create!(discount: 0.25, threshold: 10)
-    @discount_3 = @merchant_1.bulk_discounts.create!(discount: 0.10, threshold: 5)
+    @discount_1 = @merchant_1.bulk_discounts.create!(discount: 0.5,
+                                                     threshold: 15)
+    @discount_2 = @merchant_1.bulk_discounts.create!(discount: 0.25,
+                                                     threshold: 10)
+    @discount_3 = @merchant_1.bulk_discounts.create!(discount: 0.10,
+                                                     threshold: 5)
 
     visit merchant_invoice_path(@merchant_1, @invoice_1)
   end
@@ -74,14 +77,13 @@ RSpec.describe 'Show page', type: :feature do
 
   describe 'invoice discounts' do
     it 'can show discounted revenue' do
-      
-      expect(page).to have_content("Discounted Revenue: 91")
+      expect(page).to have_content('Discounted Revenue: 91')
     end
 
     it 'has a link to applied discount' do
-      
-      click_link "#{@discount_3.id}"
-      expect(current_path).to eq merchant_bulk_discount_path(@merchant_1, @discount_3)
+      click_link @discount_3.id.to_s
+      expect(current_path).to eq merchant_bulk_discount_path(@merchant_1,
+                                                             @discount_3)
     end
   end
 end
